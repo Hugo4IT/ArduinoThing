@@ -1,0 +1,16 @@
+{
+    "configurations": [
+        {
+            "name": "Arduino",
+            "includePath": [
+                "./lib/Servo/src/"
+            ],
+            "browse": {
+                "path": [
+                    "./lib/Servo/src/"
+                ]
+            }
+        }
+    ],
+    "version": 4
+}
