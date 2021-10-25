@@ -16,4 +16,4 @@ void loop() {
   delay(500);
 }
 
-//DIT IS EEN TESTCOMMENT
+// NOG EEN TESTCOMMENT
