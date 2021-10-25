@@ -16,4 +16,3 @@ void loop() {
   delay(500);
 }
 
-// NOG EEN TESTCOMMENT
