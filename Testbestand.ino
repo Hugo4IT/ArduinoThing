@@ -1,18 +1,11 @@
-#include <Servo.h>
-
-Servo myServo;
-
-int ServoPin = 7;
-int ServoPos = 180;
-
 void setup() {
-  myServo.attach(ServoPin);
+  pinMode(13, OUTPUT);
 }
 
 void loop() {
-  myServo.write(180);
+  digitalWrite(13, HIGH);
   delay(500);
-  myServo.write(0);
+  digitalWrite(13, LOW);
   delay(500);
 }
 
