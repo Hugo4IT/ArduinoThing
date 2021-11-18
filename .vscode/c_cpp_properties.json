@@ -19,7 +19,15 @@
                 "/home/hugo4it/Downloads/arduino-1.8.16/hardware/arduino/avr/variants/mega",
                 "/home/hugo4it/Downloads/arduino-1.8.16/hardware/tools/avr/lib/gcc/avr/7.3.0/include",
                 "/home/hugo4it/Downloads/arduino-1.8.16/hardware/tools/avr/lib/gcc/avr/7.3.0/include-fixed",
-                "/home/hugo4it/Downloads/arduino-1.8.16/hardware/tools/avr/avr/include"
+                "/home/hugo4it/Downloads/arduino-1.8.16/hardware/tools/avr/avr/include",
+                "/home/hugo4it/Downloads/esp8266/libraries/ESP8266WiFi/src",
+                "/home/hugo4it/Downloads/esp8266/cores/esp8266",
+                "/home/hugo4it/Downloads/esp8266/tests/host",
+                "/home/hugo4it/Downloads/esp8266/tools/sdk/include",
+                "/home/hugo4it/Downloads/esp8266/tools/xtensa-lx106-elf/xtensa-lx106-elf/include/c++/10.3.0",
+                "/home/hugo4it/Downloads/esp8266/tools/xtensa-lx106-elf/xtensa-lx106-elf/include/c++/10.3.0/xtensa-lx106-elf",
+                "/home/hugo4it/Downloads/esp8266/tools/xtensa-lx106-elf/xtensa-lx106-elf/include",
+                "/home/hugo4it/Downloads/esp8266/tools/sdk/lwip2/builder/glue-esp/lwip-1.4-arduino/include"
             ],
             "forcedInclude": [
                 "/home/hugo4it/Downloads/arduino-1.8.16/hardware/arduino/avr/cores/arduino/Arduino.h"
