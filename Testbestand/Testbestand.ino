@@ -17,11 +17,16 @@
  */
 
 void setup() {
-  Serial.begin(115200);
+  Serial.begin(9600);
   Serial.println();
 
-  WiFi.scanNetworks
-  WiFi.begin("ArduinoESPTest", "dinges1234");
+  Serial.print("Scan networks:");
+  Serial.println(WiFi.scanNetworks(false, false, 0U, (uint8*)"ArduinoTechnasium"));
+  Serial.print("SSID:");
+  Serial.println(WiFi.SSID());
+  Serial.print("Hostname:");
+  Serial.println(WiFi.getHostname());
+  WiFi.begin("ArduinoTechnasium", "dinges1234");
 
   Serial.print("Connecting");
   while (WiFi.status() != WL_CONNECTED)
@@ -33,21 +38,6 @@ void setup() {
 
   Serial.print("Connected, IP address: ");
   Serial.println(WiFi.localIP());
-
-  pinMode(B_DIR, OUTPUT);
-  pinMode(B_PWM, OUTPUT);
-  pinMode(B_BRK, OUTPUT);
 }
 
-void stopMotors() {
-  digitalWrite(B_BRK, HIGH);
-  analogWrite(B_PWM, 0);
-  delay(50);
-  digitalWrite(B_BRK, LOW);
-}
-
-void loop() {
-  digitalWrite(B_BRK, LOW);
-  digitalWrite(B_DIR, HIGH);
-  analogWrite(B_PWM, 500);
-}
+void loop(){}
