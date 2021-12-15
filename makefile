@@ -1,18 +1,23 @@
 # Dependencies (debian install command): `sudo apt-get install gcc-avr avr-libc avrdude`
+# Arduino IDE also installs all necessary components
 
-# Modify these
-ARDUINO_PATH=/home/hugo4it/Downloads/ArduinoCore-avr
+# Uncomment one, or create a new one
+
+# Hugo's Mac
+ARDUINO_PATH=/Users/hugo4it/Library/Arduino15/packages/arduino/hardware/avr/1.8.4
+# Hugo's PC
+#ARDUINO_PATH=/home/hugo4it/Downloads/ArduinoCore-avr
 
 # Leave these be
 COMPILER=avr-g++
-COMPILERFLAGS=-Wall -Wextra -Os -DF_CPU=16000000UL -mmcu=atmega328p -fno-exceptions -ffunction-sections -fdata-sections -fno-threadsafe-statics -I$(ARDUINO_PATH)/cores/arduino -I$(ARDUINO_PATH)/variants/standard -include Arduino.h -Wl,--gc-sections -g
-LINKER=avr-gcc
-LINKERFLAGS=-mmcu=atmega328p
+COMPILERFLAGS=-Wall -Wextra -Os -DF_CPU=16000000UL -mmcu=atmega328p -fno-exceptions -ffunction-sections -fdata-sections -fno-threadsafe-statics -I$(ARDUINO_PATH)/cores/arduino -I$(ARDUINO_PATH)/variants/standard -g
+LINKER=avr-g++
+LINKERFLAGS=-mmcu=atmega328p lib/*.o
 EXETOBIN=avr-objcopy
 EXETOBINFLAGS=-O ihex -R .eeprom
 UPLOADER=avrdude
-UPLOADERFLAGS=-F -V -c arduino -p ATMEGA328P -P /dev/ttyACM0 -b 115200 -U
-UPLOADERFLAGS_ALT=-F -V -c arduino -p ATMEGA328P -P /dev/cu.usbmodem11101 -b 115200 -U
+UPLOADERFLAGS=-F -V -C avrdude.conf -c arduino -p ATMEGA328P -P /dev/ttyACM0 -b 115200 -U
+UPLOADERFLAGS_ALT=-F -V -C avrdude.conf -c arduino -p ATMEGA328P -P /dev/cu.usbmodem11101 -b 115200 -U
 EXECUTABLE_OUT=bin/app.bin_exec
 BINARY_OUT=bin/app.hex
 
@@ -41,4 +46,4 @@ $(BINARY_OUT): $(EXECUTABLE_OUT) makefile
 
 run: upload
 upload: $(BINARY_OUT)
-	$(UPLOADER) $(UPLOADERFLAGS) flash:w:$(@<) || $(UPLOADER) $(UPLOADERFLAGS_ALT) flash:w:$(@<)
+	$(UPLOADER) $(UPLOADERFLAGS) flash:w:$< || $(UPLOADER) $(UPLOADERFLAGS_ALT) flash:w:$<

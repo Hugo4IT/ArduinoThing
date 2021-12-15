@@ -2,29 +2,5 @@
     "C_Cpp.files.exclude": {
         "**/.vscode": true,
         "error_check_disabled/*": true,
-    },
-    "C_Cpp.enhancedColorization": "Enabled",
-    "C_Cpp.default.browse.path": [
-        "src/*.c"
-    ],
-    "C_Cpp.default.includePath": [
-        "/usr/share/lib",
-        "/home/hugo4it/Downloads/ArduinoCore-avr/cores/arduino",
-        "/home/hugo4it/Downloads/ArduinoCore-avr/variants/standard"
-    ],
-    "C_Cpp.default.forcedInclude": [
-        "Arduino.h",
-        "Serial.h"
-    ],
-    "C_Cpp.default.compilerArgs": [
-        "-Os",
-        "-fno-exceptions",
-        "-ffunction-sections",
-        "-fdata-sections",
-        "-Wl,--gc-sections",
-        "-g",
-        "-Wall",
-        "-Wextra",
-        "-x c++"
-    ]
+    }
 }
