@@ -1,8 +1,0 @@
-{
-    "sketch": "thonk/thonk.ino",
-    "configuration": "cpu=atmega2560",
-    "board": "arduino:avr:mega",
-    "port": "/dev/cu.usbmodem11101",
-    "output": "bin",
-    "programmer": "arduino:avrisp"
-}
