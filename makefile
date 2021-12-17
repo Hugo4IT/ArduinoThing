@@ -10,14 +10,14 @@ ARDUINO_PATH=/Users/hugo4it/Library/Arduino15/packages/arduino/hardware/avr/1.8.
 
 # Leave these be
 COMPILER=avr-g++
-COMPILERFLAGS=-Wall -Wextra -Os -DF_CPU=16000000UL -mmcu=atmega328p -fno-exceptions -ffunction-sections -fdata-sections -fno-threadsafe-statics -I$(ARDUINO_PATH)/cores/arduino -I$(ARDUINO_PATH)/variants/standard -g
+COMPILERFLAGS=-Wall -Wextra -Os -DF_CPU=16000000UL -mmcu=ATmega2560 -fno-exceptions -ffunction-sections -fdata-sections -fno-threadsafe-statics -I$(ARDUINO_PATH)/cores/arduino -I$(ARDUINO_PATH)/variants/standard -g
 LINKER=avr-g++
-LINKERFLAGS=-mmcu=atmega328p lib/*.o
+LINKERFLAGS=-mmcu=ATmega2560 lib/*.o
 EXETOBIN=avr-objcopy
 EXETOBINFLAGS=-O ihex -R .eeprom
 UPLOADER=avrdude
-UPLOADERFLAGS=-F -V -C avrdude.conf -c arduino -p ATMEGA328P -P /dev/ttyACM0 -b 115200 -U
-UPLOADERFLAGS_ALT=-F -V -C avrdude.conf -c arduino -p ATMEGA328P -P /dev/cu.usbmodem11101 -b 115200 -U
+UPLOADERFLAGS=-F -V -C avrdude.conf -c arduino -p atmega2560 -P /dev/ttyACM0 -b 115200 -D
+UPLOADERFLAGS_ALT=-F -V -C /Users/hugo4it/Library/Arduino15/packages/arduino/tools/avrdude/6.3.0-arduino17/etc/avrdude.conf -c wiring -p atmega2560 -P /dev/cu.usbmodem11101 -b 115200 -D
 EXECUTABLE_OUT=bin/app.bin_exec
 BINARY_OUT=bin/app.hex
 
@@ -46,4 +46,4 @@ $(BINARY_OUT): $(EXECUTABLE_OUT) makefile
 
 run: upload
 upload: $(BINARY_OUT)
-	$(UPLOADER) $(UPLOADERFLAGS) flash:w:$< || $(UPLOADER) $(UPLOADERFLAGS_ALT) flash:w:$<
+	$(UPLOADER) $(UPLOADERFLAGS) -U flash:w:$< || $(UPLOADER) $(UPLOADERFLAGS_ALT) -U flash:w:$<
