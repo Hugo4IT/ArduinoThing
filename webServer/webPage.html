@@ -1,0 +1,24 @@
+<!-- https://www.youtube.com/watch?v=uwrWkiI6Hg8 -->
+
+<html>
+    <head>
+        <title>RODILF.UwU.pogchamp</title>
+    </head>
+    <body>
+        <button id="1" class="moveButton">Forwards</button>
+        <button id="2" class="moveButton">Right</button>
+        <button id="3" class="moveButton">Backwards</button>
+        <button id="4" class="moveButton">Left</button>
+
+        <script src="jquery.min.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $(".moveButton").click(function() {
+                    var dir = $(this).attr('id');
+
+                    $.get("http://172.20.10.13", {mov:dir});
+                });
+            });
+        </script>
+    </body>
+</html>
