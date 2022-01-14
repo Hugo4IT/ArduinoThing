@@ -236,7 +236,8 @@ void webSocketEvent(char num, WStype_t type, unsigned char *payload, size_t leng
 void setup() {
     Serial.begin(115200);
     Serial.print("Creating AP... ");
-    if (WiFi.softAP(W_SSID, W_PASS)) {
+    //W_PASS can be added
+    if (WiFi.softAP(W_SSID)) {
         Serial.println("Done!");
     } else {
         Serial.println("Failed.");
@@ -255,7 +256,7 @@ void setup() {
     Serial.println("Done!");
 
     Serial.printf("You can now connect to the WiFi network %s with password %s.\n", W_SSID, W_PASS);
-    Serial.print("Then open"); Serial.print(WiFi.localIP()); Serial.println("in a browser and try it out.");
+    Serial.print("Then open"); Serial.print(WiFi.softAPIP()); Serial.println("in a browser and try it out.");
 }
 
 void loop() {
