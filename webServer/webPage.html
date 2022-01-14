@@ -49,6 +49,21 @@
                 border-radius: 16px;
                 overflow: hidden;
             }
+
+            .socket-status {
+                background-color: var(--blue-4);
+                padding: 8px;
+                border-radius: 16px;
+
+                display: flex;
+                flex-direction: column;
+            }
+
+            .ss-row {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+            }
         </style>
     </head>
     <body style="background:var(--blue-1)">
@@ -56,6 +71,12 @@
             <div class="camera-feed">
                 <div class="cutout-corners">
                     <canvas id="cameraFeed" width="640" height="480"></canvas>
+                </div>
+                <div class="socket-status">
+                    <div class="ss-row">
+                        <span>Axis</span>
+                        <canvas width="24" height="24" id="axisIndicator"></canvas>
+                    </div>
                 </div>
                 <div class="status-box">
                     <span>Status: </span>
@@ -69,6 +90,8 @@
             var $ = s=>document.querySelector(s);
             var $$ = s=>document.querySelectorAll(s);
             var isSocketConnected = false;
+            var axis = [0, 0];
+            var axisCtx;
 
             function status(message) {
                 if ($(".status-message").textContent == message) return;
@@ -76,6 +99,16 @@
                     $(".status-message").textContent = message;
                     window.requestAnimationFrame(() => status(message)); // Wait a frame
                 }
+            }
+
+            function updateAxis(socket) {
+                axisCtx.clearRect(0, 0, 24, 24);
+                axisCtx.strokeStyle = "white";
+                axisCtx.beginPath();
+                axisCtx.moveTo(12, 12);
+                axisCtx.lineTo(12 + axis[0]*12, 12 - axis[1]*12);
+                axisCtx.stroke();
+                socket.send(axis);
             }
 
             window.onload = () => {
@@ -87,6 +120,10 @@
                 ctx.fillStyle = "white";
                 ctx.font = "48px -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif";
                 ctx.fillText("Camera feed", 0, canvas.height);
+
+                let axisCanvas = $("#axisIndicator");
+                axisCtx = axisCanvas.getContext("2d");
+                axisCtx.clearRect(0, 0, 24, 24);
 
                 status("Connecting websocket...");
                 let url = "ws://" + window.location.hostname + ":81";
@@ -107,9 +144,51 @@
                     if (!isSocketConnected) status("Couldn't connect.");
                 }, 2000);
 
-                $$(".moveButton").forEach(el=>el.onclick = () => {
-                    socket.send("Hello from JavaScript");
-                });
+                window.onkeydown = event => {
+                    if (event.repeat) return;
+                    switch (event.key) {
+                        case "ArrowUp":
+                            axis[1] += 1;
+                            updateAxis(socket);
+                            break;
+                        case "ArrowLeft":
+                            axis[0] -= 1;
+                            updateAxis(socket);
+                            break;
+                        case "ArrowRight":
+                            axis[0] += 1;
+                            updateAxis(socket);
+                            break;
+                        case "ArrowDown":
+                            axis[1] -= 1;
+                            updateAxis(socket);
+                            break;
+                        default: break;
+                    }
+                };
+
+                window.onkeyup = event => {
+                    if (event.repeat) return;
+                    switch (event.key) {
+                        case "ArrowUp":
+                            axis[1] -= 1;
+                            updateAxis(socket);
+                            break;
+                        case "ArrowLeft":
+                            axis[0] += 1;
+                            updateAxis(socket);
+                            break;
+                        case "ArrowRight":
+                            axis[0] -= 1;
+                            updateAxis(socket);
+                            break;
+                        case "ArrowDown":
+                            axis[1] += 1;
+                            updateAxis(socket);
+                            break;
+                        default: break;
+                    }
+                };
             };
         </script>
     </body>
