@@ -1,5 +1,4 @@
-<!-- https://www.youtube.com/watch?v=uwrWkiI6Hg8 -->
-
+"R(
 <html>
     <head>
         <title>RODILF.UwU.pogchamp</title>
@@ -51,8 +50,8 @@
             }
 
             .socket-status {
-                background-color: var(--blue-4);
-                padding: 8px;
+                background-color: var(--blue-1);
+                padding: 8px 16px;
                 border-radius: 16px;
 
                 display: flex;
@@ -73,9 +72,10 @@
                     <canvas id="cameraFeed" width="640" height="480"></canvas>
                 </div>
                 <div class="socket-status">
+                    <h3 style="margin:0 0 8px 0;text-align:center">Client -> Server</h3>
                     <div class="ss-row">
                         <span>Axis</span>
-                        <canvas width="24" height="24" id="axisIndicator"></canvas>
+                        <canvas width="24" height="24" id="axisIndicator" style="border-radius:50%"></canvas>
                     </div>
                 </div>
                 <div class="status-box">
@@ -102,30 +102,47 @@
             }
 
             function updateAxis(socket) {
-                axisCtx.clearRect(0, 0, 24, 24);
+                var length = Math.sqrt(
+                    Math.abs(axis[0]) ** 2 + 
+                    Math.abs(axis[1]) ** 2);
+
+                axisCtx.fillStyle = "#1e90ff";
+                axisCtx.fillRect(0, 0, 24, 24);
                 axisCtx.strokeStyle = "white";
+                axisCtx.lineWidth = 2;
                 axisCtx.beginPath();
                 axisCtx.moveTo(12, 12);
-                axisCtx.lineTo(12 + axis[0]*12, 12 - axis[1]*12);
+                axisCtx.lineTo(12 + (axis[0]*12) / length, 12 - (axis[1]*12) / length);
                 axisCtx.stroke();
 
                 if (isSocketConnected)
-                    socket.send(axis);
+                    // A+1+1 for [1, 1]
+                    // A-1+1 for [-1, 1]
+                    // Etc
+                    socket.send("A" + 
+                        (axis[0] < 0 ? "-" : "+") +
+                        Math.abs(axis[0]).toString() + 
+                        (axis[1] < 0 ? "-" : "+") +
+                        Math.abs(axis[1]).toString());
             }
 
             window.onload = () => {
                 status("Loading canvas");
                 let canvas = $("#cameraFeed");
                 let ctx = canvas.getContext("2d");
-                ctx.fillStyle = "#70a1ff";
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-                ctx.fillStyle = "white";
-                ctx.font = "48px -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif";
-                ctx.fillText("Camera feed", 0, canvas.height);
+                let image = new Image();
+                image.src = "http://placekitten.com/640/480";
+                image.onload = () => {
+                    ctx.drawImage(image, 0, 0);
+                    ctx.fillStyle = "white";
+                    ctx.font = "48px -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif";
+                    ctx.fillText("Camera feed", 0, canvas.height);
+                };
 
                 let axisCanvas = $("#axisIndicator");
                 axisCtx = axisCanvas.getContext("2d");
-                axisCtx.clearRect(0, 0, 24, 24);
+                axisCtx.fillStyle = "#1e90ff";
+                axisCtx.fillRect(0, 0, 24, 24);
 
                 status("Connecting websocket...");
                 let url = "ws://" + window.location.hostname + ":81";
@@ -136,15 +153,12 @@
                 }
                 socket.onclose = () => {
                     if (isSocketConnected) status("Socket connection closed.");
+                    else status("Couldn't connect.");
                     isSocketConnected = false;
                 }
                 socket.onmessage = event => {
                     console.log("Received data from socket: ", event.data);
                 };
-
-                setTimeout(() => {
-                    if (!isSocketConnected) status("Couldn't connect.");
-                }, 2000);
 
                 window.onkeydown = event => {
                     if (event.repeat) return;
@@ -195,3 +209,4 @@
         </script>
     </body>
 </html>
+)"
