@@ -40,6 +40,11 @@
                 padding: 16px;
             }
 
+            /* Add seperation */
+            .camera-feed>*:not(:first-child) {
+                margin-top: 16px;
+            }
+
             .cutout-corners {
                 border-radius: 16px;
                 overflow: hidden;
@@ -99,7 +104,7 @@
                 };
 
                 setTimeout(() => {
-                    if (!isSocketConnected) status("Couldn't connect!");
+                    if (!isSocketConnected) status("Couldn't connect.");
                 }, 2000);
 
                 $$(".moveButton").forEach(el=>el.onclick = () => {
