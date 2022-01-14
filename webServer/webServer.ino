@@ -218,8 +218,8 @@ const String HEADERS = "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\n";
 WiFiServer server(80);
 WebSocketsServer webSocket(81);
 
-const char SSID[] = "ESP_SERV";
-const char PASS[] = "pain";
+const char W_SSID[] = "ESP_SERV";
+const char W_PASS[] = "pain";
 
 void webSocketEvent(char num, WStype_t type, unsigned char *payload, size_t length) {
     if (type == WStype_TEXT) {
@@ -236,7 +236,7 @@ void webSocketEvent(char num, WStype_t type, unsigned char *payload, size_t leng
 void setup() {
     Serial.begin(115200);
     Serial.print("Creating AP... ");
-    if (WiFi.softAP(SSID, PASS)) {
+    if (WiFi.softAP(W_SSID, W_PASS)) {
         Serial.println("Done!");
     } else {
         Serial.println("Failed.");
@@ -254,7 +254,7 @@ void setup() {
     webSocket.onEvent(webSocketEvent);
     Serial.println("Done!");
 
-    Serial.printf("You can now connect to the WiFi network %s with password %s.\n", SSID, PASS);
+    Serial.printf("You can now connect to the WiFi network %s with password %s.\n", W_SSID, W_PASS);
     Serial.print("Then open"); Serial.print(WiFi.localIP()); Serial.println("in a browser and try it out.");
 }
 
