@@ -1,5 +1,10 @@
 /bin
 **/.DS_Store
+<<<<<<< HEAD
 .vscode/arduino.json
 .vscode/c_cpp_properties.json
 .vscode/arduino.json
+=======
+**/.vscode
+.vscode/*
+>>>>>>> 9d5cefb38ace9f9e022280f781f830159fd9b627
