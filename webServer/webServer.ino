@@ -31,8 +31,11 @@ void setup() {
 
     Serial.print("Starting WebSocketsServer... ");
     webSocket.begin();
-    webSocket.onEvent();
+    webSocket.onEvent(webServerEvent);
     Serial.println("Done!");
+
+    Serial.printf("You can now connect to the WiFi network %s with password %s.\n", SSID, PASS);
+    Serial.print("Then open"); Serial.print(WiFi.localIP()); Serial.println("in a browser and try it out.");
 }
 
 void loop() {
