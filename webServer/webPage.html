@@ -108,7 +108,9 @@
                 axisCtx.moveTo(12, 12);
                 axisCtx.lineTo(12 + axis[0]*12, 12 - axis[1]*12);
                 axisCtx.stroke();
-                socket.send(axis);
+
+                if (isSocketConnected)
+                    socket.send(axis);
             }
 
             window.onload = () => {
