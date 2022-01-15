@@ -105,6 +105,17 @@ const String PAGE = R"===(
             }
 
             function updateAxis(socket) {
+                //Make sure that axis coords are not above 1 or below -1
+                for (let index = 0; index < axis.length; index++) {
+                    const element = axis[index];
+                    if (element == -2) {
+                        axis[index] = -1;
+                    }
+                    else if (element == 2) {
+                        axis[index] = 1;
+                    }
+                }
+
                 var length = Math.sqrt(
                     Math.abs(axis[0]) ** 2 + 
                     Math.abs(axis[1]) ** 2);
