@@ -1,5 +1,6 @@
 #include <ESP8266WiFi.h>
 #include <WebSocketsServer.h>
+#include <SoftwareSerial.h>
 
 const String PAGE = R"===(
 <html>
@@ -228,6 +229,7 @@ const String HEADERS = "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\n";
 
 WiFiServer server(80);
 WebSocketsServer webSocket(81);
+SoftwareSerial ardSerial(1,3);
 
 const char W_SSID[] = "ESP_SERV";
 const char W_PASS[] = "pain";
@@ -240,12 +242,21 @@ void webSocketEvent(char num, WStype_t type, unsigned char *payload, size_t leng
             if (payload[1] == '-') x *= -1;
             if (payload[3] == '-') y *= -1;
             Serial.printf("Recieved: [%d, %d]\n", x, y);
+            //Starts at i = 1 and ends at i=4 so that it doesnt send useless A as well
+            // for (int i = 1; i < 5; i++) {
+            //     ardSerial.print(payload[i])
+            // }
+            // char newLine = '\n';
+            // ardSerial.print(newLine);
+            int xVal = payload[2];
+            ardSerial.print(xVal);
         }
     }
 }
 
 void setup() {
     Serial.begin(115200);
+    ardSerial.begin(9600);
     Serial.print("Creating AP... ");
     //W_PASS can be added
     if (WiFi.softAP(W_SSID)) {
