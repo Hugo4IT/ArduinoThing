@@ -248,8 +248,10 @@ void webSocketEvent(char num, WStype_t type, unsigned char *payload, size_t leng
             // }
             // char newLine = '\n';
             // ardSerial.print(newLine);
-            int xVal = payload[2];
-            ardSerial.print(xVal);
+            //ardSerial.print("A" + char(x+1) + char(y+1));
+            x = x + 1;
+            y = y + 1;
+            ardSerial.printf("A%d%d", x, y);
         }
     }
 }
