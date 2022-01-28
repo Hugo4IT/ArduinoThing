@@ -281,6 +281,8 @@ void setup() {
 
     Serial.printf("You can now connect to the WiFi network %s with password %s.\n", W_SSID, W_PASS);
     Serial.print("Then open"); Serial.print(WiFi.softAPIP()); Serial.println("in a browser and try it out.");
+
+    ardSerial.printf("I%s", WiFi.softAPIP());
 }
 
 void loop() {
