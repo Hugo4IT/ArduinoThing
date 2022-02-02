@@ -2,7 +2,7 @@ use std::{io, time::Duration};
 
 use minifb::{Key, KeyRepeat, Menu, Window, WindowOptions, MENU_KEY_ALT};
 
-const SCALE: usize = 4;
+const SCALE: usize = 1;
 const WIDTH: usize = 160;
 const HEIGHT: usize = 120;
 
@@ -78,11 +78,18 @@ fn main() {
         match port.read(&mut serial_buffer[..]) {
             Ok(n) => {
                 for byte in serial_buffer.get(0..n).unwrap().iter() {
-                    framebuffer[pos] = u32::from_ne_bytes([*byte, *byte, *byte, *byte]);
-                    pos += 1;
-                    if pos == WIDTH * HEIGHT {
-                        port.write(b"F").unwrap();
-                        pos = 0
+                    if (byte & 0x01) == 0x01 {
+                        match byte >> 1 {
+                            1 => pos = 0,
+                            _ => ()
+                        }
+                    } else {
+                        framebuffer[pos] = u32::from_be_bytes([0, *byte, *byte, *byte]);
+                        pos += 1;
+                        if pos == WIDTH * HEIGHT {
+                            port.write(b"F").unwrap();
+                            pos = 0
+                        }
                     }
                 }
             }
