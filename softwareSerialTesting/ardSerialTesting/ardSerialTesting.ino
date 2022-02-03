@@ -15,5 +15,5 @@ void loop() {
     int data = espSerial.read();
     Serial.print("Data received:");
     Serial.println(data);
-    delay(10);
+    delay(1200);
 }

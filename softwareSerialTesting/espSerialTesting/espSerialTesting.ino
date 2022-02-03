@@ -7,7 +7,7 @@ int txPin = 3;
 SoftwareSerial ardSerial(rxPin, txPin);
 
 void setup() {
-    Serial.begin(9600);
+    // Serial.begin(9600);
     ardSerial.begin(9600);
 }
 
