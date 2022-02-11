@@ -1,6 +1,6 @@
 #include <ESP8266WiFi.h>
 #include <WebSocketsServer.h>
-#include <SoftwareSerial.h>
+// #include <SoftwareSerial.h>
 
 const String PAGE = R"===(
 <html>
@@ -229,19 +229,20 @@ const String HEADERS = "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\n";
 
 WiFiServer server(80);
 WebSocketsServer webSocket(81);
-SoftwareSerial ardSerial(1,3);
+// SoftwareSerial ardSerial(1,3);
 
 const char W_SSID[] = "ESP_SERV";
 const char W_PASS[] = "pain";
 
 void webSocketEvent(char num, WStype_t type, unsigned char *payload, size_t length) {
+    //Serial.println((char*)payload);
     if (type == WStype_TEXT) {
         if (payload[0] == 'A') { // Axis, format: "A[+/-]X[+/-]Y", e.g.: A-1+1 for X:-1 and Y:1
             int x = (int)((char)payload[2] - '0');
             int y = (int)((char)payload[4] - '0');
             if (payload[1] == '-') x *= -1;
             if (payload[3] == '-') y *= -1;
-            Serial.printf("Recieved: [%d, %d]\n", x, y);
+            // Serial.printf("Recieved: [%d, %d]\n", x, y);
             //Starts at i = 1 and ends at i=4 so that it doesnt send useless A as well
             // for (int i = 1; i < 5; i++) {
             //     ardSerial.print(payload[i])
@@ -251,38 +252,41 @@ void webSocketEvent(char num, WStype_t type, unsigned char *payload, size_t leng
             //ardSerial.print("A" + char(x+1) + char(y+1));
             x = x + 1;
             y = y + 1;
-            ardSerial.printf("A%d%d", x, y);
+            Serial.write('A');
+            Serial.write(x);
+            Serial.write(y);
         }
     }
 }
 
 void setup() {
-    Serial.begin(115200);
-    ardSerial.begin(9600);
-    Serial.print("Creating AP... ");
+    Serial.begin(9600);
+    // Serial.println("BOO");
+    // ardSerial.begin(9600);
+    // Serial.print("Creating AP... ");
     //W_PASS can be added
     if (WiFi.softAP(W_SSID)) {
-        Serial.println("Done!");
+        // Serial.println("Done!");
     } else {
-        Serial.println("Failed.");
-        Serial.println("The Arduino will now start looping to prevent further code execution.");
-        Serial.println("To retry, press the RESET button on the Arduino.");
+        // Serial.println("Failed.");
+        // Serial.println("The Arduino will now start looping to prevent further code execution.");
+        // Serial.println("To retry, press the RESET button on the Arduino.");
         while(1);
     }
 
-    Serial.print("Starting WebServer... ");
+    // Serial.print("Starting WebServer... ");
     server.begin();
-    Serial.println("Done!");
+    // Serial.println("Done!");
 
-    Serial.print("Starting WebSocketsServer... ");
+    // Serial.print("Starting WebSocketsServer... ");
     webSocket.begin();
     webSocket.onEvent(webSocketEvent);
-    Serial.println("Done!");
+    // Serial.println("Done!");
 
-    Serial.printf("You can now connect to the WiFi network %s with password %s.\n", W_SSID, W_PASS);
-    Serial.print("Then open"); Serial.print(WiFi.softAPIP()); Serial.println("in a browser and try it out.");
+    // Serial.printf("You can now connect to the WiFi network %s with password %s.\n", W_SSID, W_PASS);
+    // Serial.print("Then open"); Serial.print(WiFi.softAPIP()); Serial.println("in a browser and try it out.");
 
-    ardSerial.printf("I%s", WiFi.softAPIP());
+    // ardSerial.printf("I%s", WiFi.softAPIP());
 }
 
 void loop() {
@@ -294,7 +298,7 @@ void loop() {
     client.flush();
     client.print(HEADERS);
     client.print(PAGE);
-    Serial.println("Page was requested, and sent.");
+    // Serial.println("Page was requested, and sent.");
 
     delay(5);
 }
