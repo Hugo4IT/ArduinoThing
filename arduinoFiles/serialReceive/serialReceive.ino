@@ -31,18 +31,58 @@ void setup() {
 
 }
 
-void left(bool dir, int speed) {
-    if (dir) {dir = HIGH;}
-    else if (!dir) {dir = LOW;}
-    digitalWrite(dirA, dir);
-    digitalWrite(speedA, speed);
+// void left(bool dir, int speed) {
+//     int dir = dir ? HIGH : LOW;
+//     digitalWrite(dirA, dir);
+//     digitalWrite(speedA, speed);
+// }
+
+// void right(bool dir, int speed) {
+//     int dir = dir ? HIGH : LOW;
+//     digitalWrite(dirB, dir);
+//     digitalWrite(speedB, speed);
+// }
+
+enum Direction {
+    FORWARDS = HIGH,
+    BACKWARDS = LOW
+};
+
+enum Speed {
+    NONE = 0,
+    HALF = 127,
+    FULL = 255
+};
+
+typedef struct Instruction{
+    struct {
+        int direction;
+        unsigned char speed;
+    } left;
+    struct {
+        int direction;
+        unsigned char speed;
+    } right;
+} Instruction;
+
+const Instruction instructions[3][3] = {
+    //      Left               Right       |       Left               Right        |       Left              Right
+    // Dir        Speed | Dir       Speed  |  Dir        Speed | Dir        Speed  |  Dir       Speed | Dir        Speed
+    {{{FORWARDS,  HALF}, {FORWARDS, FULL}}, {{FORWARDS,  FULL}, {FORWARDS,  FULL}}, {{FORWARDS, HALF}, {FORWARDS,  FULL}}},
+    {{{BACKWARDS, FULL}, {FORWARDS, FULL}}, {{FORWARDS,  NONE}, {FORWARDS,  NONE}}, {{FORWARDS, FULL}, {BACKWARDS, FULL}}},
+    {{{BACKWARDS,  HALF}, {BACKWARDS, FULL}}, {{BACKWARDS, FULL}, {BACKWARDS, FULL}}, {{BACKWARDS, FULL}, {BACKWARDS,  HALF}}}
+};
+
+struct Instruction getInstruction(int x, int y) {
+    return instructions[-y + 1][x + 1];
 }
 
-void right(bool dir, int speed) {
-    if (dir) {dir = HIGH;}
-    else if (!dir) {dir = LOW;}
-    digitalWrite(dirB, dir);
-    digitalWrite(speedB, speed);
+void input(int x, int y) {
+    Instruction inst = getInstruction(x, y);
+    digitalWrite(dirA, inst.left.direction);
+    digitalWrite(speedA, inst.left.speed);
+    digitalWrite(dirB, inst.right.direction);
+    digitalWrite(speedB, inst.right.speed);
 }
 
 void loop() {
@@ -56,68 +96,30 @@ void loop() {
             while(!Serial.available());
             int yCoord = Serial.read();
             int y = yCoord - 1;
-            // int yCoord = y - '0' - 1;
-            // if (xCoord == -1) {
-            //     digitalWrite(ledPin, HIGH);
-            // }
-            // else if (xCoord == 0 || xCoord == 1) {
-            //     digitalWrite(ledPin, LOW);
-            // }
-            Serial.print("Received: [");
-            Serial.print(x);
-            Serial.print(", ");
-            Serial.print(y);
-            Serial.println("]");
-            // digitalWrite(ledPin, HIGH * x);
+
+            input(x, y);
+
+            // Serial.print("Received: [");
+            // Serial.print(x);
+            // Serial.print(", ");
+            // Serial.print(y);
+            // Serial.println("]");
+
             // if (y == 1) {
-            //     digitalWrite(dirA, LOW);
-            //     digitalWrite(dirB, LOW);
-            //     digitalWrite(brakeA, LOW);
-            //     digitalWrite(brakeB, LOW);
-            //     analogWrite(speedA, 255);
-            //     analogWrite(speedB, 255);
+            //     if (x == -1) {left(true, 127); right(true, 255);}        //Left forward turn
+            //     else if (x == 0) {left(true, 255); right(true, 255);}    //Forward
+            //     else if (x == 1) {left(true, 255); right(true, 127);}    //Right turn
             // }
             // else if (y == 0) {
-            //     digitalWrite(dirA, LOW);
-            //     digitalWrite(dirB, LOW);
-            //     digitalWrite(brakeA, LOW);
-            //     digitalWrite(brakeB, LOW);
-            //     analogWrite(speedA, 0);
-            //     analogWrite(speedB, 0);
+            //     if (x == -1) {left(false, 255); right(true, 255);}       //Stationary left
+            //     else if (x == 0) {left(true, 0); right(true, 0);}        //Stationary
+            //     else if (x == 1) {left(true, 255); right(false, 255);}   //Stationary right
             // }
             // else if (y == -1) {
-            //     digitalWrite(dirA, HIGH);
-            //     digitalWrite(dirB, HIGH);
-            //     digitalWrite(brakeA, LOW);
-            //     digitalWrite(brakeB, LOW);
-            //     analogWrite(speedA, 255);
-            //     analogWrite(speedB, 255);
+            //     if (x == -1) {left(false, 127); right(false, 255);}      //Left backwards turn
+            //     else if (x == 0) {left(false, 255); right(false, 255);}  //Backwards
+            //     else if (x == 1) {left(false, 255); right(false, 127);}  //Right backwards turn
             // }
-            
-            // //motorA is left, motorB is right
-            // //Forward and Backwards
-            // if (y == 1 && x == 0) {motorA(true, 255); motorB(true, 255);}
-            // else if (y == -1 && x == 0) {motorA(false, 255); motorB(false, 255);}
-
-            // //Left and Right stationary turning
-            // if (y == 0 && x == -1) {motorA(false, 255); motorB(true, 255);}
-            // else if (y == 0 && x == 1) {motorA(true, 255); motorB(false, 255);}
-
-            if (y == 1) {
-                if (x == -1) {left(true, 127); right(true, 255);}        //Left forward turn
-                else if (x == 0) {left(true, 255); right(true, 255);}    //Forward
-                else if (x == 1) {left(true, 255); right(true, 127);}    //Right turn
-            }
-            else if (y == 0) {
-                if (x == -1) {left(false, 255); right(true, 255);}       //Stationary left
-                else if (x == 0) {left(true, 0); right(true, 0);}        //Stationary
-                else if (x == 1) {left(true, 255); right(false, 255);}   //Stationary right
-            }
-            else if (y == -1) {
-                if (x == -1) {left(false, 127); right(false, 255);}      //Left backwards turn
-                else if (x == 0) {left(false, 255); right(false, 255);}  //Backwards
-                else if (x == 1) {left(false, 255); right(false, 127);}  //Right backwards turn
-            }
         }
         else {
             // Serial.println("Incorrect data");
