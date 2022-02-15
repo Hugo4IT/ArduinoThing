@@ -68,9 +68,9 @@ typedef struct Instruction{
 const Instruction instructions[3][3] = {
     //      Left               Right       |       Left               Right        |       Left              Right
     // Dir        Speed | Dir       Speed  |  Dir        Speed | Dir        Speed  |  Dir       Speed | Dir        Speed
-    {{{FORWARDS,  HALF}, {FORWARDS, FULL}}, {{FORWARDS,  FULL}, {FORWARDS,  FULL}}, {{FORWARDS, HALF}, {FORWARDS,  FULL}}},
-    {{{BACKWARDS, FULL}, {FORWARDS, FULL}}, {{FORWARDS,  NONE}, {FORWARDS,  NONE}}, {{FORWARDS, FULL}, {BACKWARDS, FULL}}},
-    {{{BACKWARDS,  HALF}, {BACKWARDS, FULL}}, {{BACKWARDS, FULL}, {BACKWARDS, FULL}}, {{BACKWARDS, FULL}, {BACKWARDS,  HALF}}}
+    {{{FORWARDS,  FULL}, {FORWARDS, HALF}}, {{FORWARDS,  FULL}, {FORWARDS,  FULL}}, {{FORWARDS, HALF}, {FORWARDS,  FULL}}},
+    {{{FORWARDS, FULL}, {BACKWARDS, FULL}}, {{FORWARDS,  NONE}, {FORWARDS,  NONE}}, {{BACKWARDS, FULL}, {FORWARDS, FULL}}},
+    {{{BACKWARDS,  FULL}, {BACKWARDS, HALF}}, {{BACKWARDS, FULL}, {BACKWARDS, FULL}}, {{BACKWARDS, HALF}, {BACKWARDS,  FULL}}}
 };
 
 struct Instruction getInstruction(int x, int y) {
