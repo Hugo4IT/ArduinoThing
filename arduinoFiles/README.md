@@ -1,2 +1,2 @@
-`Camera-ov7670` (unused) - Code located on the Arduino to take the data from the ov7670 camera and send it to a connected computer through serial
-`serialReceive` - Code to make the Arduino listen to everything the ESP receives and sends to the Arduino through serial
+- `Camera-ov7670` (unused) - Code located on the Arduino to take the data from the ov7670 camera and send it to a connected computer through serial
+- `serialReceive` - Code to make the Arduino listen to everything the ESP receives and sends to the Arduino through serial
