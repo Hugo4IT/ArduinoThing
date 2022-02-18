@@ -1,4 +1,4 @@
-> **NOTE**: This was a school project, the code isn't amazing but it worked. Good enough
+> **NOTE**: This was a school project, the code isn't amazing but it worked, good enough. Each folder contains a README.md file explaining what its contents are for.
 
 Original README.md:
 
