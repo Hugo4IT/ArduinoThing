@@ -1,4 +1,4 @@
-> This was a school project, the code isn't amazing but it worked. Good enough
+> **NOTE**: This was a school project, the code isn't amazing but it worked. Good enough
 
 Original README.md:
 
