@@ -1,0 +1,1 @@
+This code runs on the ESP module, it opens a WiFi network. You may then connect to that network, and open `http://192.168.4.1:80` in your web browser of choice and you will be greeted to a control panel for the robot. You can use the arrow keys to move the robot, data is sent through websockets and then transferred to the Arduino through serial.
